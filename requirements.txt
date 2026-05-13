@@ -1,0 +1,29 @@
+# Text-to-LEGO Pipeline Dependencies
+# Install with: pip install -r requirements.txt
+
+# LLM / AI
+anthropic>=0.25.0
+openai>=1.0.0
+
+# 3D / Geometry
+numpy>=1.26.0
+trimesh>=4.0.0
+scipy>=1.12.0
+
+# LEGO / LDraw
+pyldraw>=0.11
+
+# PDF / Image
+reportlab>=4.0.0
+Pillow>=10.0.0
+
+# Web UI (optional)
+fastapi>=0.110.0
+uvicorn>=0.28.0
+
+# Data / Storage
+requests>=2.31.0
+
+# Dev / Testing
+pytest>=8.0.0
+python-dotenv>=1.0.0
