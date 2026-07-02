@@ -120,23 +120,38 @@ def instruction_filename(set_num, inst, index):
 
 
 def should_keep_instruction(url, filename):
-    text = f"{url} {filename}".lower()
+    text = f"{url} {filename}"
+    token_text = text.upper()
 
-    # Skip non-English language-specific digital booklets.
-    if "digital booklet" in text:
-        keep_markers = [
-            " - en",
-            "_en",
-            "-en.",
-            " english",
-            " - us",
-            "_us",
-            " - uk",
-            "_uk",
-        ]
-        return any(marker in text for marker in keep_markers)
+    # Extract language-like tokens from URL + filename.
+    # Examples matched: _FR_, -DE., /ZHSI/, ?lang=es
+    tokens = set(re.findall(r"[A-Z0-9]+", token_text))
 
-    # Keep normal numbered LEGO instruction PDFs.
+    english_tokens = {
+        "EN",
+        "ENUS",
+        "ENGB",
+        "ENGLISH",
+        "US",
+        "UK",
+    }
+
+    non_english_tokens = {
+        "AR", "BG", "CS", "DA", "DE", "EL", "ES", "ET", "FA", "FI", "FR",
+        "HE", "HI", "HR", "HU", "ID", "IT", "JA", "KO", "LT", "LV", "MS",
+        "NL", "NO", "PL", "PT", "RO", "RU", "SK", "SL", "SR", "SV", "TH",
+        "TR", "VI", "ZH", "ZHS", "ZHSI", "ZHT", "ZHTR",
+    }
+
+    # If file explicitly indicates English, keep it.
+    if tokens & english_tokens:
+        return True
+
+    # If file indicates a non-English locale, skip it.
+    if tokens & non_english_tokens:
+        return False
+
+    # Default keep: many core manuals have no language marker at all.
     return True
 
 
